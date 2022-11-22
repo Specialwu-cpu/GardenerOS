@@ -1,5 +1,9 @@
 cargo:rerun-if-changed=../user/src/
 cargo:rerun-if-changed=../user/target/riscv64gc-unknown-none-elf/release/
 app_0: 00hello_world
-app_1: 01store_fault
-app_2: 02power
+app_1: 00write_a
+app_2: 00write_b
+app_3: 00write_c
+app_4: 01store_fault
+app_5: 02power
+app_6: wsh_hello_world
