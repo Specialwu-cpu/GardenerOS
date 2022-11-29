@@ -1,4 +1,4 @@
-mport os
+import os
 
 base_address = 0x80400000
 step = 0x20000
