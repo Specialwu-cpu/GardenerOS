@@ -6,6 +6,7 @@ use crate::task::{
     add_task,
 };
 
+use crate::timer::get_time_ms;
 use crate::mm::{
     translated_str,
     translated_refmut,
@@ -14,7 +15,19 @@ use crate::mm::{
 use crate::loader::get_app_data_by_name;
 use alloc::sync::Arc;
 
-use crate::timer::get_time_ms;
+pub fn sys_exit(exit_code: i32) -> ! {
+    exit_current_and_run_next(exit_code);
+    panic!("Unreachable in sys_exit!");
+}
+
+pub fn sys_yield() -> isize {
+    suspend_current_and_run_next();
+    0
+}
+
+pub fn sys_get_time() -> isize {
+    get_time_ms() as isize
+}
 
 pub fn sys_getpid() -> isize {
     current_task().unwrap().pid.0 as isize
@@ -46,27 +59,11 @@ pub fn sys_exec(path: *const u8) -> isize {
     }
 }
 
-pub fn sys_exit(exit_code: i32) -> ! {
-    println!("[kernel] Application exited with code {}", exit_code);
-    exit_current_and_run_next();
-    panic!("Unreachable in sys_exit!");
-}
-
-pub fn sys_yield() -> isize {
-    suspend_current_and_run_next();
-    0
-}
-
-pub fn sys_get_time() -> isize {
-    get_time_ms() as isize
-}
-
 /// If there is not a child process whose pid is same as given, return -1.
 /// Else if there is a child process but it is still running, return -2.
 pub fn sys_waitpid(pid: isize, exit_code_ptr: *mut i32) -> isize {
     let task = current_task().unwrap();
     // find a child process
-
     // ---- access current TCB exclusively
     let mut inner = task.inner_exclusive_access();
     if inner.children

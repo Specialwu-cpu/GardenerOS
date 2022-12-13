@@ -13,6 +13,7 @@ use riscv::register::{
     stval,
     sie,
 };
+
 use crate::syscall::syscall;
 use crate::task::{
     exit_current_and_run_next,
@@ -22,7 +23,9 @@ use crate::task::{
 };
 use crate::timer::set_next_trigger;
 use crate::config::{TRAP_CONTEXT, TRAMPOLINE};
+
 global_asm!(include_str!("trap.S"));
+
 pub fn init() {
     set_kernel_trap_entry();
 }
@@ -43,7 +46,6 @@ pub fn enable_timer_interrupt() {
 #[no_mangle]
 pub fn trap_handler() -> ! {
     set_kernel_trap_entry();
-    let cx = current_trap_cx();
     let scause = scause::read();
     let stval = stval::read();
     match scause.cause() {
@@ -109,8 +111,9 @@ pub fn trap_return() -> ! {
         );
     }
 }
+
 #[no_mangle]
 pub fn trap_from_kernel() -> ! {
-    panic!("a trap from kernel!");
+    panic!("a trap {:?} from kernel!", scause::read().cause());
 }
 pub use context::{TrapContext};

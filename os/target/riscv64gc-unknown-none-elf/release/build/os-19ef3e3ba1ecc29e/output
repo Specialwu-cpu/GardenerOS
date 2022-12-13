@@ -1,8 +1,17 @@
 cargo:rerun-if-changed=../user/src/
 cargo:rerun-if-changed=../user/target/riscv64gc-unknown-none-elf/release/
-app_0: 00power_3
-app_1: 01power_5
-app_2: 02power_7
-app_3: 03sleep
-app_4: 04load_fault
-app_5: 05store_fault
+app_0: exit
+app_1: fantastic_text
+app_2: forktest
+app_3: forktest2
+app_4: forktest_simple
+app_5: forktree
+app_6: hello_world
+app_7: initproc
+app_8: matrix
+app_9: sleep
+app_10: sleep_simple
+app_11: stack_overflow
+app_12: user_shell
+app_13: usertests
+app_14: yield
