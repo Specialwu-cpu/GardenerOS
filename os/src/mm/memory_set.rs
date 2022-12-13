@@ -212,6 +212,10 @@ impl MemorySet {
         }
         memory_set
     }
+
+    pub fn recycle_data_pages(&mut self) {
+        self.areas.clear();
+    }
 }
 pub struct MapArea {
     vpn_range: VPNRange,
