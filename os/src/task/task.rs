@@ -103,6 +103,7 @@ impl TaskControlBlock {
         );
         task_control_block
     }
+
     pub fn exec(&self, elf_data: &[u8]) {
         // memory_set with elf program headers/trampoline/trap context/user stack
         let (memory_set, user_sp, entry_point) = MemorySet::from_elf(elf_data);
@@ -128,6 +129,7 @@ impl TaskControlBlock {
         );
         // **** release inner automatically
     }
+
     pub fn fork(self: &Arc<TaskControlBlock>) -> Arc<TaskControlBlock> {
         // ---- access parent PCB exclusively
         let mut parent_inner = self.inner_exclusive_access();
@@ -168,6 +170,7 @@ impl TaskControlBlock {
         // ---- release parent PCB automatically
         // **** release children PCB automatically
     }
+
     pub fn getpid(&self) -> usize {
         self.pid.0
     }
